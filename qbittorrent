@@ -1,0 +1,33 @@
+version: "3"
+services:
+  qbittorentvpn:
+    container_name: QBittorent-VPN
+    image: binhex/arch-qbittorrentvpn
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8080:8080
+      - 8118:8118
+    environment:
+      - VPN_ENABLED=yes
+      - VPN_PROV=custom
+      - VPN_CLIENT=wireguard
+      - STRICT_PORT_FORWARD=yes
+      - ENABLE_PRIVOXY=yes
+      - LAN_NETWORK=10.0.0.0/24
+      - NAME_SERVERS=1.1.1.1,1.0.0.1
+      - VPN_INPUT_PORTS=51820
+      - VPN_OUTPUT_PORTS=51820
+      - DEBUG=false
+      - WEBUI_PORT=8080
+      - UMASK=000
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - /home/darbster/docker/qbittorent:/data
+      - /home/darbster/docker/qbittorent:/config
+      - /etc/localtime:/etc/localtime:ro
+networks: {}
