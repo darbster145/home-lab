@@ -1,0 +1,30 @@
+version: "3"
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 80:80/tcp
+    environment:
+      TZ: America/Denver
+      WEBPASSWORD: Temp1234!
+    volumes:
+      - etc-pihole:/etc/pihole
+      - etc-dnsmasq.d:/etc/dnsmasq.d
+    restart: unless-stopped
+volumes:
+  etc-pihole:
+    name: etc-pihole
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/docker-volumes/pihole/etc-pihole
+  etc-dnsmasq.d:
+    name: etc-dnsmasq.d
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/docker-volumes/pihole/etc-dnsmasq.d
+networks: {}
