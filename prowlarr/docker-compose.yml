@@ -1,0 +1,21 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - prowlarr_data:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+volumes:
+  prowlarr_data:
+    name: prowlarr_data
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/docker-volumes/prowlarr
+networks: {}
