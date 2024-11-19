@@ -1,0 +1,42 @@
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+      - VERSION=docker
+    volumes:
+      - plex_data:/config
+      - plex_tvshows:/tv
+      - plex_movies:/movies
+    ports:
+      - 32400:32400
+      - 32469:32469
+      - 1900:1900
+      - 5353:5353/udp
+      - 8324:8324
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    restart: unless-stopped
+volumes:
+  plex_data:
+    name: plex_data
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/docker-volumes/plex
+  plex_tvshows:
+    name: plex_tvshows
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/media/tvshows
+  plex_movies:
+    name: plex_movies
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/media/movies
+networks: {}
