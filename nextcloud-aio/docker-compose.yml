@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  all-in-one:
+    init: true
+    container_name: nextcloud-aio-mastercontainer
+    restart: always
+    ports:
+      - 81:80
+      - 8081:8080
+      - 8443:8443
+    environment:
+      APACHE_PORT: 8442
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    image: nextcloud/all-in-one:latest
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/docker-volumes/nextcloud-aio
+networks: {}
