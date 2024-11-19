@@ -27,7 +27,14 @@ services:
       - PGID=1000
       - TZ=America/Denver
     volumes:
-      - /home/darbster/docker/qbittorent:/data
-      - /home/darbster/docker/qbittorent:/config
+      - qbittorent:/data
+      - qbittorent:/config
       - /etc/localtime:/etc/localtime:ro
+volumes:
+  qbittorent:
+    name: qbittorent
+    driver_opts:
+      type: nfs
+      o: addr=10.0.0.3,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: :/mnt/notonedrive/docker-volumes/qbittorent
 networks: {}
